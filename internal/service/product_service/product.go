@@ -75,7 +75,7 @@ func (p *ProductService) GetProduct(ctx context.Context, req *GetProductReq) (*P
 }
 
 // ListProducts implements ProductServiceApi.
-func (p *ProductService) ListProducts(ctx context.Context, req *ListProductReq) (ListProductsRes, *service.ServiceError) {
+func (p *ProductService) ListProducts(ctx context.Context, req *ListProductReq) (ListProductRes, *service.ServiceError) {
 	products, repoErr := p.productRepo.List(ctx, &product.ListProductRequest{
 		Limit:  req.Limit,
 		Offset: req.Offset,
