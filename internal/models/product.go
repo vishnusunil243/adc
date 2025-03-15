@@ -10,11 +10,11 @@ type Product struct {
 	Id     string   `json:"id"`
 	Name   string   `json:"name"`
 	Images []string `json:"images"`
-	Price  string   `json:"price"`
+	Price  float64  `json:"price"`
 	*common.AuditFields
 }
 
-func NewProduct(name string, images []string, price string) *Product {
+func NewProduct(name string, images []string, price float64) *Product {
 	return &Product{
 		Name:        name,
 		Images:      images,
@@ -27,7 +27,7 @@ type ProductBaseResponse struct {
 	Id     string   `json:"id"`
 	Name   string   `json:"name"`
 	Images []string `json:"images"`
-	Price  string   `json:"price"`
+	Price  float64  `json:"price"`
 }
 
 func NewProductBaseResponse(product *Product) *ProductBaseResponse {
@@ -54,7 +54,7 @@ func (p *Product) UpdateImages(images *[]string) {
 	}
 }
 
-func (p *Product) UpdatePrice(price *string) {
+func (p *Product) UpdatePrice(price *float64) {
 	if price != nil {
 		p.Price = *price
 	}

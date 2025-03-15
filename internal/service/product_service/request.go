@@ -3,14 +3,14 @@ package product_service
 type CreateProductReq struct {
 	Name   string   `json:"name"`
 	Images []string `json:"images"`
-	Price  string   `json:"price"`
+	Price  float64  `json:"price"`
 }
 
 type UpdateProductReq struct {
 	Id     string    `json:"id"`
 	Name   *string   `json:"name"`
 	Images *[]string `json:"images"`
-	Price  *string   `json:"price"`
+	Price  *float64  `json:"price"`
 }
 
 type DeleteProductReq struct {
