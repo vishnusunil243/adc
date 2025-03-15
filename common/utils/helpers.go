@@ -1,6 +1,12 @@
 package utils
 
-import "golang.org/x/crypto/bcrypt"
+import (
+	"context"
+	"math/rand"
+	"time"
+
+	"golang.org/x/crypto/bcrypt"
+)
 
 // EncryptPassword hashes the given password using bcrypt
 func EncryptPassword(password string) (string, error) {
@@ -15,4 +21,23 @@ func EncryptPassword(password string) (string, error) {
 func ComparePassword(hashedPassword, password string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 	return err == nil
+}
+
+const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+
+func GenerateReadableID(length int) string {
+	rand.Seed(time.Now().UnixNano()) // Ensure randomness on each execution
+	id := make([]byte, length)
+	for i := range id {
+		id[i] = charset[rand.Intn(len(charset))]
+	}
+	return string(id)
+}
+
+func GetCurrentUser(ctx context.Context) string {
+	userId, ok := ctx.Value("user_id").(string)
+	if ok {
+		return userId
+	}
+	return ""
 }

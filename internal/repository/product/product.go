@@ -5,6 +5,7 @@ import (
 
 	"gorm.io/gorm"
 	"main.go/common"
+	"main.go/common/database"
 	"main.go/internal/models"
 	"main.go/internal/repository"
 )
@@ -79,9 +80,9 @@ func (p *ProductRepo) Get(ctx context.Context, req *GetProductRequest) (*models.
 }
 
 // NewProductRepo initializes a new ProductRepo instance
-func NewProductRepo(db *gorm.DB) *ProductRepo {
+func NewProductRepo() *ProductRepo {
 	if productRepo == nil {
-		productRepo = &ProductRepo{Db: db}
+		productRepo = &ProductRepo{Db: database.GetDb()}
 	}
 	return productRepo
 }

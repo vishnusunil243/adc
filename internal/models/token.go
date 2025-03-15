@@ -1,6 +1,10 @@
 package models
 
-import "main.go/common"
+import (
+	"gorm.io/gorm"
+	"main.go/common"
+	"main.go/common/utils"
+)
 
 type OAuth2Token struct {
 	Id     string `json:"id"`
@@ -15,4 +19,11 @@ func NewOauth2Token(token, userId string) *OAuth2Token {
 		UserId:      userId,
 		AuditFields: common.NewAuditFields(),
 	}
+}
+
+func (u *OAuth2Token) BeforeCreate(tx *gorm.DB) error {
+	if u.Id == "" {
+		u.Id = utils.GenerateReadableID(16)
+	}
+	return nil
 }
