@@ -3,6 +3,7 @@ package handlers
 import (
 	"github.com/labstack/echo/v4"
 	cart_handlers "main.go/cmd/handlers/cart"
+	order_handlers "main.go/cmd/handlers/order"
 	product_handlers "main.go/cmd/handlers/product"
 	user_handlers "main.go/cmd/handlers/user"
 	"main.go/cmd/middlewares"
@@ -12,6 +13,7 @@ func RegisterHandlers(e *echo.Echo) {
 	registerUserHandlers(e)
 	registerProductHandlers(e)
 	registerCartHandlers(e)
+	registerOrderHandlers(e)
 }
 
 func registerUserHandlers(e *echo.Echo) {
@@ -41,4 +43,13 @@ func registerCartHandlers(e *echo.Echo) {
 	cartGroup.DELETE("/:id/", cart_handlers.NewCartHandler().DeleteCart)
 	cartGroup.GET("/:id/", cart_handlers.NewCartHandler().GetCart)
 	cartGroup.GET("/list/", cart_handlers.NewCartHandler().ListCart)
+}
+
+func registerOrderHandlers(e *echo.Echo) {
+	orderGroup := e.Group("/order")
+	orderGroup.Use(middlewares.JWTMiddleware)
+	orderGroup.POST("/", order_handlers.NewOrderHandler().AddOrder)
+	orderGroup.GET("/list/", order_handlers.NewOrderHandler().ListOrders)
+	orderGroup.GET("/:id/", order_handlers.NewOrderHandler().GetOrder)
+	orderGroup.PATCH("/:id/", order_handlers.NewOrderHandler().UpdateOrder)
 }
