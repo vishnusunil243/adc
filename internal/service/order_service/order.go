@@ -14,6 +14,7 @@ type OrderServiceApi interface {
 	AddOrder(ctx context.Context, req *AddOrderRequest) *service.ServiceError
 	ListOrders(ctx context.Context, req *ListOrderRequest) ([]*OrderResponse, *service.ServiceError)
 	GetOrder(ctx context.Context, req *GetOrderRequest) (*OrderResponse, *service.ServiceError)
+	UpdateOrder(ctx context.Context, req *UpdateOrderRequest) (*OrderResponse, *service.ServiceError)
 }
 
 type OrderService struct {

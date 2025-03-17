@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"github.com/labstack/echo/v4"
+	address_handlers "main.go/cmd/handlers/address"
 	cart_handlers "main.go/cmd/handlers/cart"
 	order_handlers "main.go/cmd/handlers/order"
 	product_handlers "main.go/cmd/handlers/product"
@@ -14,6 +15,7 @@ func RegisterHandlers(e *echo.Echo) {
 	registerProductHandlers(e)
 	registerCartHandlers(e)
 	registerOrderHandlers(e)
+	registerAddressHandlers(e)
 }
 
 func registerUserHandlers(e *echo.Echo) {
@@ -52,4 +54,14 @@ func registerOrderHandlers(e *echo.Echo) {
 	orderGroup.GET("/list/", order_handlers.NewOrderHandler().ListOrders)
 	orderGroup.GET("/:id/", order_handlers.NewOrderHandler().GetOrder)
 	orderGroup.PATCH("/:id/", order_handlers.NewOrderHandler().UpdateOrder)
+}
+
+func registerAddressHandlers(e *echo.Echo) {
+	addressGroup := e.Group("/address")
+	addressGroup.Use(middlewares.JWTMiddleware)
+	addressGroup.POST("/", address_handlers.NewAddressHandler().Create)
+	addressGroup.PATCH("/:id/", address_handlers.NewAddressHandler().Update)
+	addressGroup.GET("/:id/", address_handlers.NewAddressHandler().Get)
+	addressGroup.GET("/list/", address_handlers.NewAddressHandler().List)
+	addressGroup.DELETE("/:id/", address_handlers.NewAddressHandler().Delete)
 }

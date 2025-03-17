@@ -1,5 +1,7 @@
 package order_service
 
+import "main.go/internal/models"
+
 type AddOrderRequest struct {
 	Products []*OrderProduct `json:"products"`
 }
@@ -24,4 +26,9 @@ type ListOrderRequest struct {
 
 type GetOrderRequest struct {
 	Id string `json:"id"`
+}
+
+type UpdateOrderRequest struct {
+	Id     string        `json:"id"`
+	Status models.Status `json:"status"`
 }
