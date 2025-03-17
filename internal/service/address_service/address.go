@@ -25,7 +25,8 @@ type AddressService struct {
 
 // CreateAddress implements AddressServiceApi.
 func (a *AddressService) CreateAddress(ctx context.Context, req *CreateAddressReq) (*AddressRes, *service.ServiceError) {
-	address, repoErr := a.addressRepo.CreateAddress(ctx, models.NewAddress(req.UserId, req.Country, req.State, req.City, req.Pincode, req.Street, req.Area, req.CreatedBy))
+	userId := utils.GetCurrentUser(ctx)
+	address, repoErr := a.addressRepo.CreateAddress(ctx, models.NewAddress(userId, req.Country, req.State, req.City, req.Pincode, req.Street, req.Area, userId))
 	if repoErr != nil {
 		return nil, service.HandleRepoErr(repoErr, "Failed to create address")
 	}
