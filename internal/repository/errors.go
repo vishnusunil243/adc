@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/lib/pq"
+	"gorm.io/gorm"
 	"main.go/common"
 )
 
@@ -22,6 +23,14 @@ func (r *RepoErr) Error() string {
 func HandleDBError(err error) *RepoErr {
 	if err == nil {
 		return nil
+	}
+
+	// Handle GORM ErrRecordNotFound
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return &RepoErr{
+			Message:   "record not found",
+			ErrorCode: common.ErrCodeNotFound,
+		}
 	}
 
 	// Handle SQL No Rows Error

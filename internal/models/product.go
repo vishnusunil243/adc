@@ -9,7 +9,7 @@ import (
 type Product struct {
 	Id     string   `json:"id"`
 	Name   string   `json:"name"`
-	Images []string `json:"images"`
+	Images []string `gorm:"type:text[]" json:"images"`
 	Price  float64  `json:"price"`
 	*common.AuditFields
 }

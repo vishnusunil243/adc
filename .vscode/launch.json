@@ -1,0 +1,27 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Launch Go Program",
+        "type": "go",
+        "request": "launch",
+        "mode": "auto",
+        "program": "${workspaceFolder}/cmd/api/main.go", // Adjust path if your main file is different
+        "args": [], // Add any arguments to pass to your Go program
+        "showLog": true, // Optional: Show debug logs
+        "envFile": "${workspaceFolder}/.env", // Optional: Load environment variables from a .env file
+        "buildFlags": ["-tags", "dev"] // Optional: Add build tags if needed
+      },
+      {
+        "name": "Attach to Go Process",
+        "type": "go",
+        "request": "attach",
+        "mode": "remote",
+        "processId": "${command:pickProcess}", // Automatically choose process to attach to
+        "env": {
+          "GOPATH": "/path/to/your/gopath"
+        }
+      }
+    ]
+  }
+  

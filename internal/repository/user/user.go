@@ -5,6 +5,7 @@ import (
 
 	"gorm.io/gorm"
 	"main.go/common"
+	"main.go/common/database"
 	"main.go/internal/models"
 	"main.go/internal/repository"
 )
@@ -51,7 +52,7 @@ func (u *UserRepo) List(ctx context.Context, req *ListUserRequest) ([]*models.Us
 }
 
 func (u *UserRepo) Get(ctx context.Context, req *GetUserRequest) (*models.User, *repository.RepoErr) {
-	var user *models.User
+	var user models.User
 	qry := u.Db.Model(&models.User{}).Where("is_deleted=0")
 	if req.Email != "" {
 		qry = qry.Where("email=?", req.Email)
@@ -65,13 +66,15 @@ func (u *UserRepo) Get(ctx context.Context, req *GetUserRequest) (*models.User, 
 	if err := qry.First(&user).Error; err != nil {
 		return nil, repository.HandleDBError(err)
 	}
-	return user, nil
+	return &user, nil
 
 }
 
 func NewUserRepo() *UserRepo {
 	if userRepo == nil {
-		userRepo = &UserRepo{}
+		userRepo = &UserRepo{
+			Db: database.GetDb(),
+		}
 	}
 	return userRepo
 }

@@ -10,7 +10,7 @@ import (
 	"main.go/cmd/middlewares"
 )
 
-func RegisterHandlers(e *echo.Echo) {
+func RegisterHandlers(e *echo.Group) {
 	registerUserHandlers(e)
 	registerProductHandlers(e)
 	registerCartHandlers(e)
@@ -18,16 +18,16 @@ func RegisterHandlers(e *echo.Echo) {
 	registerAddressHandlers(e)
 }
 
-func registerUserHandlers(e *echo.Echo) {
+func registerUserHandlers(e *echo.Group) {
 	userGroup := e.Group("/user")
-	userGroup.POST("/signup/", user_handlers.NewUserHandler().Signup)
+	userGroup.POST("/signup/", user_handlers.NewUserHandler().Signup, middlewares.BasicAuthMiddleware)
 	userGroup.Use(middlewares.JWTMiddleware)
 	userGroup.POST("/login/", user_handlers.NewUserHandler().Login)
 	userGroup.GET("/list/", user_handlers.NewUserHandler().List)
 	userGroup.GET("/:id/", user_handlers.NewUserHandler().Get)
 }
 
-func registerProductHandlers(e *echo.Echo) {
+func registerProductHandlers(e *echo.Group) {
 	productGroup := e.Group("/product")
 	productGroup.Use(middlewares.JWTMiddleware)
 	productGroup.POST("/", product_handlers.NewProductHandler().Create)
@@ -37,7 +37,7 @@ func registerProductHandlers(e *echo.Echo) {
 	productGroup.PATCH("/:id/", product_handlers.NewProductHandler().Update)
 }
 
-func registerCartHandlers(e *echo.Echo) {
+func registerCartHandlers(e *echo.Group) {
 	cartGroup := e.Group("/cart")
 	cartGroup.Use(middlewares.JWTMiddleware)
 	cartGroup.POST("/", cart_handlers.NewCartHandler().AddToCart)
@@ -47,7 +47,7 @@ func registerCartHandlers(e *echo.Echo) {
 	cartGroup.GET("/list/", cart_handlers.NewCartHandler().ListCart)
 }
 
-func registerOrderHandlers(e *echo.Echo) {
+func registerOrderHandlers(e *echo.Group) {
 	orderGroup := e.Group("/order")
 	orderGroup.Use(middlewares.JWTMiddleware)
 	orderGroup.POST("/", order_handlers.NewOrderHandler().AddOrder)
@@ -56,7 +56,7 @@ func registerOrderHandlers(e *echo.Echo) {
 	orderGroup.PATCH("/:id/", order_handlers.NewOrderHandler().UpdateOrder)
 }
 
-func registerAddressHandlers(e *echo.Echo) {
+func registerAddressHandlers(e *echo.Group) {
 	addressGroup := e.Group("/address")
 	addressGroup.Use(middlewares.JWTMiddleware)
 	addressGroup.POST("/", address_handlers.NewAddressHandler().Create)
