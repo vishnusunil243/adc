@@ -2,6 +2,7 @@ package cart_service
 
 import (
 	"context"
+	"log"
 
 	"main.go/common"
 	"main.go/common/utils"
@@ -31,6 +32,7 @@ type CartService struct {
 // **Service Methods**
 func (c *CartService) AddToCart(ctx context.Context, req *AddToCartRequest) (*CartRes, *service.ServiceError) {
 	currentUser := utils.GetCurrentUser(ctx)
+	log.Println("current user: %v", currentUser)
 	existingCart, err := c.cartRepo.GetCart(ctx, &cart.GetCartRequest{
 		UserId:    currentUser,
 		ProductId: req.ProductId,
@@ -38,8 +40,8 @@ func (c *CartService) AddToCart(ctx context.Context, req *AddToCartRequest) (*Ca
 	if err != nil && err.ErrorCode != common.ErrCodeNotFound {
 		return nil, service.HandleRepoErr(err, "Failed to get carts")
 	}
-	newQuantity := existingCart.Quantity + 1
 	if existingCart != nil {
+		newQuantity := existingCart.Quantity + 1
 		return c.UpdateCart(ctx, &UpdateCartRequest{
 			Quantity: &newQuantity,
 			Id:       existingCart.Id,

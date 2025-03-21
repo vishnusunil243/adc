@@ -1,6 +1,10 @@
 package models
 
-import "main.go/common"
+import (
+	"gorm.io/gorm"
+	"main.go/common"
+	"main.go/common/utils"
+)
 
 type Cart struct {
 	Id        string `json:"id"`
@@ -41,4 +45,11 @@ func (c *Cart) UpdateQuantity(qty *int64) {
 	if qty != nil {
 		c.Quantity = *qty
 	}
+}
+
+func (u *Cart) BeforeCreate(tx *gorm.DB) error {
+	if u.Id == "" {
+		u.Id = utils.GenerateReadableID(16)
+	}
+	return nil
 }

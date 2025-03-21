@@ -14,11 +14,6 @@ import (
 	"main.go/internal/service/user_service"
 )
 
-// ContextKey is a custom type to avoid collisions
-type ContextKey string
-
-const UserIDKey ContextKey = "user_id"
-
 func JWTMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		authHeader := c.Request().Header.Get("Authorization")
@@ -43,7 +38,7 @@ func JWTMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 
 		// Set user ID in context
-		ctx := context.WithValue(c.Request().Context(), UserIDKey, userID)
+		ctx := context.WithValue(c.Request().Context(), utils.UserIDKey, userID)
 		c.SetRequest(c.Request().WithContext(ctx))
 
 		// Call the next handler
@@ -77,7 +72,7 @@ func AdminMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 			return fmt.Errorf("you don't have authorisation to perform this action")
 		}
 		// Set user ID in context
-		ctx := context.WithValue(c.Request().Context(), UserIDKey, userID)
+		ctx := context.WithValue(c.Request().Context(), utils.UserIDKey, userID)
 		c.SetRequest(c.Request().WithContext(ctx))
 
 		// Call the next handler
@@ -125,7 +120,7 @@ func BasicAuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 
 		// Optional: You can set the username in the context if needed for further use in the handlers
-		ctx := context.WithValue(c.Request().Context(), UserIDKey, username)
+		ctx := context.WithValue(c.Request().Context(), utils.UserIDKey, username)
 		c.SetRequest(c.Request().WithContext(ctx))
 
 		// Call the next handler

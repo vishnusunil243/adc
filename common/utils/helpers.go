@@ -5,8 +5,14 @@ import (
 	"math/rand"
 	"time"
 
+	"github.com/labstack/gommon/log"
 	"golang.org/x/crypto/bcrypt"
 )
+
+// ContextKey is a custom type to avoid collisions
+type ContextKey string
+
+const UserIDKey ContextKey = "user_id"
 
 // EncryptPassword hashes the given password using bcrypt
 func EncryptPassword(password string) (string, error) {
@@ -35,9 +41,10 @@ func GenerateReadableID(length int) string {
 }
 
 func GetCurrentUser(ctx context.Context) string {
-	userId, ok := ctx.Value("user_id").(string)
+	userId, ok := ctx.Value(UserIDKey).(string)
 	if ok {
 		return userId
 	}
+	log.Infof("failed to get userid")
 	return ""
 }
