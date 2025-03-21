@@ -20,9 +20,9 @@ func RegisterHandlers(e *echo.Group) {
 
 func registerUserHandlers(e *echo.Group) {
 	userGroup := e.Group("/user")
+	userGroup.POST("/login/", user_handlers.NewUserHandler().Login, middlewares.BasicAuthMiddleware)
 	userGroup.POST("/signup/", user_handlers.NewUserHandler().Signup, middlewares.BasicAuthMiddleware)
 	userGroup.Use(middlewares.JWTMiddleware)
-	userGroup.POST("/login/", user_handlers.NewUserHandler().Login)
 	userGroup.GET("/list/", user_handlers.NewUserHandler().List)
 	userGroup.GET("/:id/", user_handlers.NewUserHandler().Get)
 }
@@ -32,7 +32,7 @@ func registerProductHandlers(e *echo.Group) {
 	productGroup.Use(middlewares.JWTMiddleware)
 	productGroup.POST("/", product_handlers.NewProductHandler().Create)
 	productGroup.GET("/:id/", product_handlers.NewProductHandler().Get)
-	productGroup.POST("/delete/", product_handlers.NewProductHandler().Delete)
+	productGroup.DELETE("/:id/", product_handlers.NewProductHandler().Delete)
 	productGroup.GET("/list/", product_handlers.NewProductHandler().List)
 	productGroup.PATCH("/:id/", product_handlers.NewProductHandler().Update)
 }

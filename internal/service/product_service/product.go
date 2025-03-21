@@ -48,6 +48,8 @@ func (p *ProductService) UpdateProduct(ctx context.Context, req *UpdateProductRe
 		return nil, service.HandleRepoErr(repoErr, "Product not found")
 	}
 	existingProduct.UpdateName(req.Name)
+	existingProduct.UpdatePrice(req.Price)
+	existingProduct.UpdateImages(req.Images)
 
 	updatedProduct, repoErr := p.productRepo.Save(ctx, existingProduct)
 	if repoErr != nil {

@@ -1,5 +1,7 @@
 package user_service
 
+import "main.go/internal/models"
+
 type SignupReq struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
@@ -19,6 +21,7 @@ type ListUserReq struct {
 }
 
 type GetUserReq struct {
-	Email string `json:"email"`
-	Id    string `json:"id"`
+	Email    string          `json:"email"`
+	Id       string          `json:"id"`
+	UserType models.UserType `json:"user_type"`
 }

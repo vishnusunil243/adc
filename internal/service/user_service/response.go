@@ -3,10 +3,11 @@ package user_service
 import "main.go/internal/models"
 
 type UserRes struct {
-	Id    string `json:"id"`
-	Name  string `json:"name"`
-	Email string `json:"email"`
-	Logo  string `json:"logo"`
+	Id       string          `json:"id"`
+	Name     string          `json:"name"`
+	Email    string          `json:"email"`
+	Logo     string          `json:"logo"`
+	UserType models.UserType `json:"user_type"`
 }
 
 type LoginRes struct {
@@ -16,10 +17,11 @@ type LoginRes struct {
 
 func NewUserRes(user *models.User) *UserRes {
 	return &UserRes{
-		Id:    user.Id,
-		Name:  user.Name,
-		Email: user.Email,
-		Logo:  user.Logo,
+		Id:       user.Id,
+		Name:     user.Name,
+		Email:    user.Email,
+		Logo:     user.Logo,
+		UserType: user.UserType,
 	}
 }
 

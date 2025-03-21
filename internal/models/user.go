@@ -6,12 +6,20 @@ import (
 	"main.go/common/utils"
 )
 
+type UserType string
+
+var (
+	Admin  UserType = "admin"
+	Normal UserType = "normal"
+)
+
 type User struct {
-	Id       string `json:"id"`
-	Name     string `json:"name"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
-	Logo     string `json:"logo"`
+	Id       string   `json:"id"`
+	Name     string   `json:"name"`
+	Email    string   `json:"email"`
+	Password string   `json:"password"`
+	Logo     string   `json:"logo"`
+	UserType UserType `json:"user_type" gorm:"default:normal;not null;"`
 	*common.AuditFields
 }
 

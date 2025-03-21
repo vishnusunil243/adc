@@ -37,7 +37,7 @@ func (a *AuditFields) GetAuditFieldsUserIds() []string {
 
 func GetFieldsForDelete() map[string]interface{} {
 	return map[string]interface{}{
-		"is_deleted": 0,
+		"is_deleted": 1,
 		"deleted_at": time.Now().UTC().UnixMilli(),
 	}
 }

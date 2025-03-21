@@ -12,6 +12,8 @@ type ServiceError struct {
 	MetaData   string           `json:"metadata"`
 }
 
+func (s ServiceError) Error() string { return s.Message }
+
 func HandleRepoErr(repoErr *repository.RepoErr, msg string) *ServiceError {
 	return &ServiceError{
 		Message:   msg,
