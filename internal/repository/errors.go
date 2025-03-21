@@ -33,8 +33,24 @@ func HandleDBError(err error) *RepoErr {
 		}
 	}
 
+	// Handle GORM Validation Errors
+	if errors.Is(err, gorm.ErrInvalidData) {
+		return &RepoErr{
+			Message:   "invalid data",
+			ErrorCode: common.ErrCodeInvalidData,
+		}
+	}
+
 	// Handle SQL No Rows Error
 	if errors.Is(err, sql.ErrNoRows) {
+		return &RepoErr{
+			Message:   "record not found",
+			ErrorCode: common.ErrCodeNotFound,
+		}
+	}
+
+	// Handle GORM Errors related to Database Constraints
+	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return &RepoErr{
 			Message:   "record not found",
 			ErrorCode: common.ErrCodeNotFound,

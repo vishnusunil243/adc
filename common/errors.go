@@ -15,6 +15,7 @@ const (
 	ErrCodeTooManyConnections     ErrorCode = "TOO_MANY_CONNECTIONS"
 	ErrCodeSerializationFailure   ErrorCode = "SERIALIZATION_FAILURE"
 	ErrCodeInvalidColumnReference ErrorCode = "INVALID_COLUMN_REFERENCE"
+	ErrCodeInvalidData            ErrorCode = "INVALID_DATA"
 
 	ErrCodeInvalidRequest   ErrorCode = "INVALID_REQUEST"
 	ErrCodeValidationFailed ErrorCode = "VALIDATION_FAILED"
