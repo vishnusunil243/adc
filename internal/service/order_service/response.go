@@ -7,6 +7,7 @@ import (
 type OrderResponse struct {
 	Id       string                        `json:"id"`
 	Total    float64                       `json:"total"`
+	Status   models.Status                 `json:"status"`
 	Products []*models.ProductBaseResponse `json:"products"`
 }
 
@@ -23,6 +24,7 @@ func NewOrderResponse(order *models.Order, productMap map[string]*models.Product
 	return &OrderResponse{
 		Id:       order.Id,
 		Total:    order.Total,
+		Status:   order.Status,
 		Products: products,
 	}
 }
