@@ -14,6 +14,9 @@ type ContextKey string
 
 const UserIDKey ContextKey = "user_id"
 
+const DefaultLimit = 30
+const DefaultOffset = 0
+
 // EncryptPassword hashes the given password using bcrypt
 func EncryptPassword(password string) (string, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)

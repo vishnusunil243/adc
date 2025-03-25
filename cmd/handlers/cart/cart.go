@@ -6,6 +6,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"main.go/common"
+	"main.go/common/utils"
 	"main.go/internal/service"
 	"main.go/internal/service/cart_service"
 )
@@ -59,6 +60,12 @@ func (ch *CartHandler) ListCart(c echo.Context) error {
 
 	limitInt, _ := strconv.Atoi(limit)
 	offsetInt, _ := strconv.Atoi(offset)
+	if limitInt <= 0 {
+		limitInt = utils.DefaultLimit
+	}
+	if offsetInt <= 0 {
+		offsetInt = utils.DefaultOffset
+	}
 
 	req := cart_service.ListCartRequest{
 		Limit:  limitInt,

@@ -3,7 +3,8 @@ package order_service
 import "main.go/internal/models"
 
 type AddOrderRequest struct {
-	Products []*OrderProduct `json:"products"`
+	Products  []*OrderProduct `json:"products"`
+	AddressId string          `json:"address_id"`
 }
 
 func (a *AddOrderRequest) GetProductIds() []string {

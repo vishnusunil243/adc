@@ -2,9 +2,12 @@ package order_service
 
 import (
 	"context"
+	"net/http"
 
+	"main.go/common"
 	"main.go/common/utils"
 	"main.go/internal/models"
+	"main.go/internal/repository/address"
 	"main.go/internal/repository/order"
 	"main.go/internal/repository/product"
 	"main.go/internal/service"
@@ -21,6 +24,7 @@ type OrderService struct {
 	orderRepo        *order.OrderRepo
 	orderProductRepo *order.OrderProductRepo
 	productRepo      *product.ProductRepo
+	addressRepo      *address.AddressRepo
 }
 
 var orderService *OrderService
@@ -28,7 +32,16 @@ var orderService *OrderService
 func (o *OrderService) AddOrder(ctx context.Context, req *AddOrderRequest) *service.ServiceError {
 	userId := utils.GetCurrentUser(ctx)
 	productIds := req.GetProductIds()
-	newOrder := models.NewOrder(userId, 0)
+	address, err := o.addressRepo.Get(ctx, &address.GetAddressRequest{
+		Id: req.AddressId,
+	})
+	if err != nil {
+		return service.HandleRepoErr(err, "Failed to get address")
+	}
+	if address == nil {
+		return service.NewServiceError("Invalid address id", common.ErrCodeInvalidRequest, http.StatusBadRequest)
+	}
+	newOrder := models.NewOrder(userId, 0, req.AddressId)
 	products, err := o.productRepo.List(ctx, &product.ListProductRequest{
 		Ids: productIds,
 	})
@@ -133,6 +146,7 @@ func NewOrderService() OrderServiceApi {
 			orderRepo:        order.NewOrderRepo(),
 			orderProductRepo: order.NewOrderProductRepo(),
 			productRepo:      product.NewProductRepo(),
+			addressRepo:      address.NewAddressRepo(),
 		}
 	}
 	return orderService

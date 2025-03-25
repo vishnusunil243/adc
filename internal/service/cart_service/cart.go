@@ -59,6 +59,7 @@ func (c *CartService) UpdateCart(ctx context.Context, req *UpdateCartRequest) (*
 	currentUser := utils.GetCurrentUser(ctx)
 	existingCart, repoErr := c.cartRepo.GetCart(ctx, &cart.GetCartRequest{
 		ProductId: req.ProductId,
+		Id:        req.Id,
 		UserId:    currentUser,
 	})
 	if repoErr != nil {

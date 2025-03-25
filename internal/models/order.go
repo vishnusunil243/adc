@@ -25,6 +25,7 @@ type Order struct {
 	DeliveredAt int64   `json:"bigint"`
 	ShippedAt   int64   `json:"shipped_at"`
 	PlacedAt    int64   `json:"placed_at"`
+	AddressId   string  `json:"address_id"`
 	*common.AuditFields
 }
 
@@ -34,10 +35,11 @@ func (o *Order) UpdateStatus(status Status) {
 	}
 }
 
-func NewOrder(userId string, total float64) *Order {
+func NewOrder(userId string, total float64, addressId string) *Order {
 	return &Order{
 		UserId:      userId,
 		Total:       total,
+		AddressId:   addressId,
 		AuditFields: common.NewAuditFields(),
 	}
 }
@@ -152,7 +154,7 @@ func (l *ListOrderProductResponse) ToOrderMap() map[string][]*OrderProduct {
 func (l *ListOrderProductResponse) ListProductIds() []string {
 	productIds := []string{}
 	for _, prod := range *l {
-		productIds = append(productIds, prod.Id)
+		productIds = append(productIds, prod.ProductId)
 	}
 	return productIds
 }

@@ -1,6 +1,10 @@
 package models
 
-import "main.go/common"
+import (
+	"gorm.io/gorm"
+	"main.go/common"
+	"main.go/common/utils"
+)
 
 type Address struct {
 	Id      string `json:"id"`
@@ -12,6 +16,13 @@ type Address struct {
 	Street  string `json:"street"`
 	Area    string `json:"area"`
 	*common.AuditFields
+}
+
+func (u *Address) BeforeCreate(tx *gorm.DB) error {
+	if u.Id == "" {
+		u.Id = utils.GenerateReadableID(16)
+	}
+	return nil
 }
 
 type ListAddress []*Address
