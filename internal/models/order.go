@@ -18,14 +18,15 @@ const (
 )
 
 type Order struct {
-	Id          string  `json:"id"`
-	UserId      string  `json:"user_id"`
-	Total       float64 `json:"total"`
-	Status      Status  `json:"status"`
-	DeliveredAt int64   `json:"bigint"`
-	ShippedAt   int64   `json:"shipped_at"`
-	PlacedAt    int64   `json:"placed_at"`
-	AddressId   string  `json:"address_id"`
+	Id               string  `json:"id"`
+	UserId           string  `json:"user_id"`
+	Total            float64 `json:"total"`
+	Status           Status  `json:"status"`
+	DeliveredAt      int64   `json:"bigint"`
+	ShippedAt        int64   `json:"shipped_at"`
+	PlacedAt         int64   `json:"placed_at"`
+	AddressId        string  `json:"address_id"`
+	PaymentSessionId string  `json:"payment_session_id"`
 	*common.AuditFields
 }
 
