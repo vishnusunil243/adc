@@ -67,6 +67,8 @@ func (o *OrderRepo) Get(ctx context.Context, req *GetOrderRequest) (*models.Orde
 
 	if req.Id != "" {
 		qry = qry.Where("id = ?", req.Id)
+	} else if req.PaymentSessionId != "" {
+		qry = qry.Where("payment_session_id=?", req.PaymentSessionId)
 	} else {
 		return nil, repository.NewRepoErr("invalid request: id is required", common.ErrCodeInvalidRequest)
 	}

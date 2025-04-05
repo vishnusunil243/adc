@@ -8,7 +8,8 @@ type ListOrderRequest struct {
 }
 
 type GetOrderRequest struct {
-	Id string
+	Id               string
+	PaymentSessionId string
 }
 
 type GetOrderProductRequest struct {

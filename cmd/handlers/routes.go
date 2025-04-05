@@ -5,6 +5,7 @@ import (
 	address_handlers "main.go/cmd/handlers/address"
 	cart_handlers "main.go/cmd/handlers/cart"
 	order_handlers "main.go/cmd/handlers/order"
+	payment_handlers "main.go/cmd/handlers/payment"
 	product_handlers "main.go/cmd/handlers/product"
 	user_handlers "main.go/cmd/handlers/user"
 	"main.go/cmd/middlewares"
@@ -16,6 +17,7 @@ func RegisterHandlers(e *echo.Group) {
 	registerCartHandlers(e)
 	registerOrderHandlers(e)
 	registerAddressHandlers(e)
+	registerPaymentHandlers(e)
 }
 
 func registerUserHandlers(e *echo.Group) {
@@ -64,4 +66,11 @@ func registerAddressHandlers(e *echo.Group) {
 	addressGroup.GET("/:id/", address_handlers.NewAddressHandler().Get)
 	addressGroup.GET("/list/", address_handlers.NewAddressHandler().List)
 	addressGroup.DELETE("/:id/", address_handlers.NewAddressHandler().Delete)
+}
+
+func registerPaymentHandlers(e *echo.Group) {
+	paymentGroup := e.Group("/payment")
+	paymentGroup.POST("/w/stripe/", payment_handlers.NewPaymentHandler().HandleWebhook)
+	paymentGroup.Use(middlewares.JWTMiddleware)
+	paymentGroup.POST("/session/", payment_handlers.NewPaymentHandler().CreateCheckoutSession)
 }

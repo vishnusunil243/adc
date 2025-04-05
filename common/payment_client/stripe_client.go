@@ -19,6 +19,7 @@ type PaymentIntentRes struct {
 	Status          models.PaymentStatus
 	PaymentIntentId string
 	SessionId       string
+	PaymentMethod   string // Add the PaymentMethod field
 }
 
 var stripeClient *Client
@@ -45,18 +46,18 @@ func GetStripeClient() *Client {
 }
 
 // CreateCheckoutSession creates a Stripe Checkout session and returns the session ID.
-func (c *Client) CreateCheckoutSession(orderID string, totalAmount int64) (string, error) {
+func (c *Client) CreateCheckoutSession(orderID string, totalAmount float64) (string, error) {
 	// Initialize Stripe client with the secret key
 	stripe.Key = c.StripeSecretKey
 
 	// Create Checkout Session parameters
 	params := &stripe.CheckoutSessionParams{
-		PaymentMethodTypes: stripe.StringSlice([]string{"card"}),
+		PaymentMethodTypes: stripe.StringSlice([]string{"card"}), // Payment method type
 		LineItems: []*stripe.CheckoutSessionLineItemParams{
 			{
 				PriceData: &stripe.CheckoutSessionLineItemPriceDataParams{
-					Currency:   stripe.String(string(stripe.CurrencyUSD)),
-					UnitAmount: stripe.Int64(totalAmount), // Amount in cents
+					Currency:          stripe.String(string(stripe.CurrencyUSD)),
+					UnitAmountDecimal: stripe.Float64(totalAmount), // Amount in cents
 					ProductData: &stripe.CheckoutSessionLineItemPriceDataProductDataParams{
 						Name: stripe.String("Order " + orderID),
 					},
@@ -106,7 +107,6 @@ func (c *Client) HandleWebhook(payload []byte, sigHeader string) (*PaymentIntent
 		log.Printf("Unhandled event type: %s", event.Type)
 		return nil, nil
 	}
-
 }
 
 func handlePaymentIntentForStripe(paymentIntent *stripe.PaymentIntent) *PaymentIntentRes {
@@ -120,6 +120,10 @@ func handlePaymentIntentForStripe(paymentIntent *stripe.PaymentIntent) *PaymentI
 		res.Status = models.PaymentProcessing
 	}
 	res.PaymentIntentId = paymentIntent.ID
+	if paymentIntent.PaymentMethod != nil {
+		// Add the PaymentMethod details to the response
+		res.PaymentMethod = paymentIntent.PaymentMethod.ID
+	}
 	return &res
 }
 

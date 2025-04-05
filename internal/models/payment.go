@@ -23,7 +23,7 @@ type Payment struct {
 	Id              string        `json:"id"`
 	OrderId         string        `json:"order_id"`
 	Type            PaymentType   `json:"type"`
-	PaymentMethod   string        `json:"payment_method"`
+	PaymentMethod   string        `json:"payment_method"` //id of the payment method
 	PaymentStatus   PaymentStatus `json:"payment_status"`
 	PaymentIntentId string        `json:"payment_intent_id"`
 	*common.AuditFields

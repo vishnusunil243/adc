@@ -30,6 +30,12 @@ type Order struct {
 	*common.AuditFields
 }
 
+func (o *Order) UpdatePaymentSessionId(paymentSessionId string) {
+	if paymentSessionId != "" {
+		o.PaymentSessionId = paymentSessionId
+	}
+}
+
 func (o *Order) UpdateStatus(status Status) {
 	if status != "" {
 		o.Status = status
